@@ -14,6 +14,7 @@
     "lint:md": "markdownlint \"**/*.md\" --ignore node_modules",
     "format": "prettier --write \"**/*.{ts,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,json,md}\"",
+    "prepare": "husky",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -38,11 +39,26 @@
     "@cloudflare/workers-types": "^4",
     "@vitest/coverage-v8": "^4",
     "eslint": "^9",
+    "husky": "^9",
+    "lint-staged": "^16",
     "markdownlint-cli": "^0.43.0",
     "prettier": "^3.6.2",
     "typescript": "^6",
     "typescript-eslint": "^8",
     "vitest": "^4",
     "wrangler": "^4"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "pnpm exec eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.json": [
+      "prettier --write"
+    ],
+    "**/*.md": [
+      "prettier --write",
+      "markdownlint --fix"
+    ]
   }
 }
