@@ -58,6 +58,35 @@ function escapeForJs(value: string): string {
   return value.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/</g, "\\u003c");
 }
 
+function escapeForHtml(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function standaloneCallbackResponse(title: string, message: string, extraHeaders?: Record<string, string>): Response {
+  const safeTitle = escapeForHtml(title);
+  const safeMessage = escapeForHtml(message);
+  const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>${safeTitle}</title>
+</head>
+<body>
+<h1>${safeTitle}</h1>
+<p>${safeMessage}</p>
+<p>You can close this tab and return to GitHub or the app.</p>
+</body>
+</html>`;
+  return new Response(html, {
+    headers: {
+      "Content-Type": "text/html",
+      "Content-Security-Policy": "default-src 'none'",
+      ...securityHeaders(),
+      ...extraHeaders,
+    },
+  });
+}
+
 function postMessageResponse(origin: string, message: object, extraHeaders?: Record<string, string>): Response {
   const json = JSON.stringify(message).replace(/</g, "\\u003c");
   const safeOrigin = escapeForJs(origin);
@@ -115,14 +144,31 @@ function handleLogin(url: URL, env: Env): Response {
 async function handleCallback(url: URL, request: Request, env: Env, spaOrigin: string): Promise<Response> {
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
+  const cookies = parseCookies(request.headers.get("Cookie") ?? "");
+  const cookieState = cookies["oauth_state"];
   const clearCookie = { "Set-Cookie": clearCookieHeader() };
 
-  if (!code || !state) {
+  if (!state) {
+    if (code) {
+      return standaloneCallbackResponse(
+        "Authorization complete",
+        "GitHub App authorization finished. Return to GitHub and continue the installation flow.",
+        clearCookie,
+      );
+    }
+
+    return standaloneCallbackResponse(
+      "Authorization not completed",
+      "GitHub App authorization did not return a code. Return to GitHub and try the installation flow again.",
+      clearCookie,
+    );
+  }
+
+  if (!code) {
     return postMessageResponse(spaOrigin, { type: "gh-auth-bridge:auth:error", error: "missing_params" }, clearCookie);
   }
 
-  const cookies = parseCookies(request.headers.get("Cookie") ?? "");
-  if (cookies["oauth_state"] !== state) {
+  if (cookieState !== state) {
     return postMessageResponse(spaOrigin, { type: "gh-auth-bridge:auth:error", error: "invalid_state" }, clearCookie);
   }
 

@@ -2,12 +2,18 @@
 
 ## Endpoints
 
-| Method | Path             | Purpose                |
-| ------ | ---------------- | ---------------------- |
-| `GET`  | `/auth/login`    | OAuth 開始             |
-| `GET`  | `/auth/callback` | code 交換 + popup 応答 |
-| `POST` | `/auth/refresh`  | refresh token 交換     |
-| `GET`  | `/auth/health`   | health check           |
+| Method | Path             | Purpose                                          |
+| ------ | ---------------- | ------------------------------------------------ |
+| `GET`  | `/auth/login`    | OAuth 開始                                       |
+| `GET`  | `/auth/callback` | popup token bridge または standalone install案内 |
+| `POST` | `/auth/refresh`  | refresh token 交換                               |
+| `GET`  | `/auth/health`   | health check                                     |
+
+## Callback behavior
+
+- `state` がある callback は popup login 完了として扱い、cookie と照合した後に token exchange を行う
+- `state` がない callback は GitHub App install 導線の direct-tab callback
+  として扱い、token exchange は行わず案内ページを返す
 
 ## postMessage payload
 

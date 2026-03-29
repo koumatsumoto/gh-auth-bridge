@@ -129,13 +129,6 @@ describe("OAuth Proxy Worker", () => {
         expect(body).toContain("window.close()");
       });
 
-      it("returns error when state is missing", async () => {
-        const response = await worker.fetch(createCallbackRequest({ code: "test-code" }, FIXED_STATE), TEST_ENV);
-
-        const body = await response.text();
-        expect(body).toContain('"error":"missing_params"');
-      });
-
       it("returns error when state does not match cookie", async () => {
         const response = await worker.fetch(createCallbackRequest({ code: "test-code", state: "wrong-state" }, FIXED_STATE), TEST_ENV);
 
@@ -148,6 +141,43 @@ describe("OAuth Proxy Worker", () => {
 
         const body = await response.text();
         expect(body).toContain('"error":"invalid_state"');
+      });
+    });
+
+    describe("standalone install authorization", () => {
+      it("renders a standalone success page when GitHub App installation callback has no state", async () => {
+        const fetchSpy = vi.spyOn(globalThis, "fetch");
+
+        const response = await worker.fetch(createCallbackRequest({ code: "install-code" }), TEST_ENV);
+
+        expect(response.headers.get("Content-Type")).toBe("text/html");
+        const body = await response.text();
+        expect(body).toContain("Authorization complete");
+        expect(body).toContain("continue the installation flow");
+        expect(body).not.toContain("Logging in...");
+        expect(body).not.toContain("window.opener.postMessage");
+        expect(fetchSpy).not.toHaveBeenCalled();
+      });
+
+      it("renders the standalone success page even when a stale oauth_state cookie exists", async () => {
+        const fetchSpy = vi.spyOn(globalThis, "fetch");
+
+        const response = await worker.fetch(createCallbackRequest({ code: "install-code" }, FIXED_STATE), TEST_ENV);
+
+        const body = await response.text();
+        expect(body).toContain("Authorization complete");
+        expect(body).toContain("continue the installation flow");
+        expect(body).not.toContain("window.opener.postMessage");
+        expect(fetchSpy).not.toHaveBeenCalled();
+      });
+
+      it("renders a standalone retry page when no state or code is present", async () => {
+        const response = await worker.fetch(createCallbackRequest({}), TEST_ENV);
+
+        const body = await response.text();
+        expect(body).toContain("Authorization not completed");
+        expect(body).toContain("try the installation flow again");
+        expect(body).not.toContain("window.opener.postMessage");
       });
     });
 

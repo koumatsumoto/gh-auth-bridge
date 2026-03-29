@@ -70,6 +70,14 @@ GitHub > Settings > Developer settings > GitHub Apps > New GitHub App
   `ato-datastore` と `zai-datastore` が含まれていること
 - App の権限設定で `Issues: Read and write` が有効なこと
 
+### callback 画面の挙動
+
+- `Install & Authorize` の途中では `gh-auth-bridge` の callback URL が直接開く
+- この場合は popup login ではないため、callback は単独タブの案内ページとして表示される
+- 認可に成功した場合は `Authorization complete` と表示される
+- 認可が完了しなかった場合は retry 案内が表示される
+- いずれの場合も、そのタブを閉じて GitHub または consumer app 側へ戻ればよい
+
 ## 7. Consumer 側への反映
 
 - `ato` の setup 導線が App slug を固定している場合は install URL を更新する
