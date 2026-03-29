@@ -50,6 +50,26 @@ GitHub > Settings > Developer settings > GitHub Apps > New GitHub App
 - `ato-datastore`
 - `zai-datastore`
 
+### インストール手順
+
+1. GitHub で `Settings`
+2. `Developer settings`
+3. `GitHub Apps`
+4. 対象 App を開く
+5. `Install App` を開く
+6. インストール先の account を選ぶ
+7. `Repository access` で `Only select repositories` を選ぶ
+8. 次の repository を追加する
+   - `ato-datastore`
+   - `zai-datastore`
+9. `Install` を押す
+
+### 確認方法
+
+- `Install App` 画面で installation の対象 repository に
+  `ato-datastore` と `zai-datastore` が含まれていること
+- App の権限設定で `Issues: Read and write` が有効なこと
+
 ## 7. Consumer 側への反映
 
 - `ato` の setup 導線が App slug を固定している場合は install URL を更新する
