@@ -6,8 +6,8 @@
 
 Settings > Secrets and variables > Actions > Secrets
 
-| Name | 用途 |
-| --- | --- |
+| Name                   | 用途                      |
+| ---------------------- | ------------------------- |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare Workers deploy |
 
 ## 2. Workflow

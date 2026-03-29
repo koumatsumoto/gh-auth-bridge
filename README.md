@@ -6,12 +6,12 @@ refresh token の境界だけを担当する。
 
 ## Endpoints
 
-| Method | Path | Purpose |
-| ------ | ---- | ------- |
-| `GET` | `/auth/login` | GitHub OAuth 開始 |
-| `GET` | `/auth/callback` | code 交換 + popup `postMessage` |
-| `POST` | `/auth/refresh` | refresh token 交換 |
-| `GET` | `/auth/health` | health check |
+| Method | Path             | Purpose                         |
+| ------ | ---------------- | ------------------------------- |
+| `GET`  | `/auth/login`    | GitHub OAuth 開始               |
+| `GET`  | `/auth/callback` | code 交換 + popup `postMessage` |
+| `POST` | `/auth/refresh`  | refresh token 交換              |
+| `GET`  | `/auth/health`   | health check                    |
 
 ## Message and Storage Contract
 

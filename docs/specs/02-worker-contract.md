@@ -2,12 +2,12 @@
 
 ## Endpoints
 
-| Method | Path | Purpose |
-| --- | --- | --- |
-| `GET` | `/auth/login` | OAuth 開始 |
-| `GET` | `/auth/callback` | code 交換 + popup 応答 |
-| `POST` | `/auth/refresh` | refresh token 交換 |
-| `GET` | `/auth/health` | health check |
+| Method | Path             | Purpose                |
+| ------ | ---------------- | ---------------------- |
+| `GET`  | `/auth/login`    | OAuth 開始             |
+| `GET`  | `/auth/callback` | code 交換 + popup 応答 |
+| `POST` | `/auth/refresh`  | refresh token 交換     |
+| `GET`  | `/auth/health`   | health check           |
 
 ## postMessage payload
 
@@ -42,8 +42,8 @@
 
 ## Runtime bindings
 
-| Name | Kind | Purpose |
-| --- | --- | --- |
-| `GITHUB_CLIENT_ID` | Secret | GitHub token exchange |
-| `GITHUB_CLIENT_SECRET` | Secret | GitHub token exchange |
-| `SPA_ORIGIN` | Variable | `Origin` / `postMessage` 許可先 |
+| Name                   | Kind     | Purpose                         |
+| ---------------------- | -------- | ------------------------------- |
+| `GITHUB_CLIENT_ID`     | Secret   | GitHub token exchange           |
+| `GITHUB_CLIENT_SECRET` | Secret   | GitHub token exchange           |
+| `SPA_ORIGIN`           | Variable | `Origin` / `postMessage` 許可先 |
