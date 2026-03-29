@@ -1,0 +1,48 @@
+{
+  "name": "gh-auth-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24.13.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "lint": "eslint .",
+    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules",
+    "format": "prettier --write \"**/*.{ts,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,json,md}\"",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "prettier": {
+    "printWidth": 150
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "workerd"
+    ],
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "typescript": ">=6"
+      }
+    }
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4",
+    "@vitest/coverage-v8": "^4",
+    "eslint": "^9",
+    "markdownlint-cli": "^0.43.0",
+    "prettier": "^3.6.2",
+    "typescript": "^6",
+    "typescript-eslint": "^8",
+    "vitest": "^4",
+    "wrangler": "^4"
+  }
+}
