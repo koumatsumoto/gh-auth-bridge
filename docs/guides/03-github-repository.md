@@ -35,3 +35,16 @@ Consumer repo で更新が必要なもの:
 - `ato` Actions Variable `OAUTH_PROXY_URL`
 - `zai` Actions Variable `OAUTH_PROXY_URL`
 - GitHub App callback URL
+
+`ato` と `zai` の `OAUTH_PROXY_URL` には次の値を設定する。
+
+```text
+https://gh-auth-bridge.koumatsumoto.workers.dev
+```
+
+注意点:
+
+- `/auth/login` などの path は付けない
+- 末尾の `/` も付けない
+- GitHub App callback URL は
+  `https://gh-auth-bridge.koumatsumoto.workers.dev/auth/callback`
