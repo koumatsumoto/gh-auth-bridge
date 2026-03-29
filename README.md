@@ -2,7 +2,7 @@
 
 Cloudflare Workers 上で動作する GitHub OAuth bridge。
 `ato` と `zai` から共有利用され、GitHub OAuth callback と
-token refresh の境界だけを担当する。
+refresh token の境界だけを担当する。
 
 ## Endpoints
 
@@ -83,8 +83,8 @@ pnpm exec wrangler secret put GITHUB_CLIENT_SECRET
 
 ### 4. Verify
 
-- `https://gh-auth-bridge.<subdomain>.workers.dev/auth/health` が `OK`
-- `https://gh-auth-bridge.<subdomain>.workers.dev/auth/login` で GitHub 認可画面に遷移
+- `https://gh-auth-bridge.koumatsumoto.workers.dev/auth/health` が `OK`
+- `https://gh-auth-bridge.koumatsumoto.workers.dev/auth/login` で GitHub 認可画面に遷移
 - callback 後に popup が閉じ、SPA 側に `gh-auth-bridge:auth:success` が届く
 
 ## GitHub Actions Setup
@@ -100,14 +100,19 @@ Workflow:
 
 ## GitHub App Setup
 
-`ato` で使っていた GitHub App をそのまま流用する場合は、少なくとも callback URL をこの Worker に更新する。
+`ato` で使っていた GitHub App をそのまま流用する場合は、
+少なくとも callback URL をこの Worker に更新する。
 
 ### Required App settings
 
-| Field | Development | Production |
-| ----- | ----------- | ---------- |
-| Homepage URL | `http://localhost:5173` | `https://koumatsumoto.github.io/ato` |
-| Callback URL | `http://localhost:8787/auth/callback` | prod worker URL |
+- Development homepage URL:
+  `http://localhost:5173`
+- Development callback URL:
+  `http://localhost:8787/auth/callback`
+- Production homepage URL:
+  `https://koumatsumoto.github.io/ato`
+- Production callback URL:
+  `https://gh-auth-bridge.koumatsumoto.workers.dev/auth/callback`
 
 ### Permissions
 
@@ -121,7 +126,7 @@ Workflow:
 - `zai-datastore`
 
 Production callback URL:
-`https://gh-auth-bridge.<subdomain>.workers.dev/auth/callback`
+`https://gh-auth-bridge.koumatsumoto.workers.dev/auth/callback`
 
 `ato` 側のセットアップ導線が固定 install URL を持っている場合は、
 その URL も新 App 名に合わせて更新する。
@@ -146,3 +151,15 @@ pnpm test
 pnpm test:coverage
 pnpm deploy
 ```
+
+## Documentation
+
+- `docs/guides/01-github-app.md`
+- `docs/guides/02-cloudflare-workers.md`
+- `docs/guides/03-github-repository.md`
+- `docs/guides/04-local-development.md`
+- `docs/specs/01-architecture.md`
+- `docs/specs/02-worker-contract.md`
+- `docs/specs/03-auth-flow.md`
+- `docs/specs/04-security.md`
+- `docs/specs/05-ci-cd.md`
