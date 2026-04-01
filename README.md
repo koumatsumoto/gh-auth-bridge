@@ -26,7 +26,7 @@ refresh token の境界だけを担当する。
 ## Client SDK
 
 SPA 向けクライアント SDK を `@koumatsumoto/gh-auth-bridge-client` として
-GitHub Packages に公開している。
+npmjs.org に公開している。
 
 ```bash
 pnpm add @koumatsumoto/gh-auth-bridge-client
