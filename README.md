@@ -173,7 +173,7 @@ pnpm deploy
 - `docs/guides/02-cloudflare-workers.md`
 - `docs/guides/03-github-repository.md`
 - `docs/guides/04-local-development.md`
-- `docs/guides/05-client-sdk-setup.md`
+- `docs/guides/05-client-sdk.md`
 - `docs/specs/01-architecture.md`
 - `docs/specs/02-worker-contract.md`
 - `docs/specs/03-auth-flow.md`

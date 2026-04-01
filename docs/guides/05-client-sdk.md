@@ -1,4 +1,4 @@
-# 05. Client SDK セットアップガイド
+# 05. Client SDK
 
 新規プロジェクトで `@koumatsumoto/gh-auth-bridge-client` を導入する手順。
 
