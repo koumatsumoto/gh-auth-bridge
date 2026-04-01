@@ -23,6 +23,20 @@ refresh token の境界だけを担当する。
   - `gh-auth-bridge:token-expires-at`
   - `gh-auth-bridge:refresh-expires-at`
 
+## Client SDK
+
+SPA 向けクライアント SDK を `@koumatsumoto/gh-auth-bridge-client` として
+npmjs.org に公開している。
+
+```bash
+pnpm add @koumatsumoto/gh-auth-bridge-client
+```
+
+popup login、token 管理、GitHub API 呼び出し（自動 refresh 付き）を提供する。
+React + TanStack Query 向けの統合も `@koumatsumoto/gh-auth-bridge-client/react` で利用可能。
+
+詳細は [`client/README.md`](./client/README.md) を参照。
+
 ## Prerequisites
 
 - Node.js >= 24.13.0
@@ -159,8 +173,10 @@ pnpm deploy
 - `docs/guides/02-cloudflare-workers.md`
 - `docs/guides/03-github-repository.md`
 - `docs/guides/04-local-development.md`
+- `docs/guides/05-client-sdk.md`
 - `docs/specs/01-architecture.md`
 - `docs/specs/02-worker-contract.md`
 - `docs/specs/03-auth-flow.md`
 - `docs/specs/04-security.md`
 - `docs/specs/05-ci-cd.md`
+- `docs/specs/06-client-sdk.md`

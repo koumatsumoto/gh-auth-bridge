@@ -14,7 +14,7 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
-  checks:
+  worker-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -42,3 +42,30 @@ jobs:
 
       - name: Run tests with coverage
         run: pnpm test:coverage
+
+  client-checks:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: .
+
+      - name: TypeScript check
+        run: pnpm typecheck
+
+      - name: Run tests with coverage
+        run: pnpm test:coverage
+
+      - name: Build
+        run: pnpm build
