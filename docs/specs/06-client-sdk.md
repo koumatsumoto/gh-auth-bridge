@@ -124,5 +124,5 @@ SDK は `gh-auth-bridge:*` キーのみ管理。
 ## CI/CD
 
 - CI: `worker-checks` + `client-checks` の2ジョブ並列実行
-- publish: `client/v*` タグ push で GitHub Packages に自動 publish
-- `GITHUB_TOKEN` で認証（PAT 不要）
+- publish: `client/v*` タグ push で npmjs.org に自動 publish
+- `NPM_TOKEN` secret で認証、provenance 付き

@@ -8,34 +8,13 @@
 - GitHub App が設定済み（[01-github-app.md](./01-github-app.md) 参照）
 - Node.js >= 24, pnpm >= 10
 
-## 1. GitHub Packages 認証設定
-
-### ローカル開発
-
-`read:packages` スコープの Personal Access Token (classic) を作成:
-
-1. GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
-2. Generate new token → `read:packages` にチェック
-3. 生成されたトークンを環境変数に設定:
-
-```bash
-export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
-```
-
-### プロジェクトの `.npmrc` 作成
-
-```ini
-@koumatsumoto:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-```
-
-## 2. パッケージインストール
+## 1. パッケージインストール
 
 ```bash
 pnpm add @koumatsumoto/gh-auth-bridge-client
 ```
 
-## 3. アプリへの組み込み
+## 2. アプリへの組み込み
 
 ### React + TanStack Query の場合
 
@@ -118,7 +97,7 @@ const response = await githubFetch("/user");
 const user = await response.json();
 ```
 
-## 4. 環境変数
+## 3. 環境変数
 
 - `VITE_OAUTH_PROXY_URL`
   — gh-auth-bridge Worker の URL
@@ -137,58 +116,7 @@ GitHub Actions Variables (本番):
 OAUTH_PROXY_URL=https://gh-auth-bridge.koumatsumoto.workers.dev
 ```
 
-## 5. CI/CD での認証設定
-
-### 方法 A: GITHUB_TOKEN + Manage Actions access（推奨）
-
-1. gh-auth-bridge の Package settings を開く:
-   - GitHub → gh-auth-bridge → Packages → @koumatsumoto/gh-auth-bridge-client
-   - Package settings → Manage Actions access
-   - "Add Repository" → 消費側リポジトリを追加 → Role: Read
-
-2. 消費側の workflow:
-
-```yaml
-permissions:
-  contents: read
-  packages: read
-
-steps:
-  - uses: actions/setup-node@v5
-    with:
-      node-version: "24"
-      registry-url: "https://npm.pkg.github.com"
-      scope: "@koumatsumoto"
-
-  - run: pnpm install --frozen-lockfile
-    env:
-      NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-### 方法 B: PAT を使用
-
-1. `read:packages` スコープの PAT (classic) を作成
-2. 消費側の Repository secrets に `GH_PACKAGES_TOKEN` として登録
-3. workflow で使用:
-
-```yaml
-- run: pnpm install --frozen-lockfile
-  env:
-    NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
-```
-
-## 6. トラブルシューティング
-
-### `npm error 401 Unauthorized`
-
-- `.npmrc` の `_authToken` が正しいか確認
-- PAT に `read:packages` スコープがあるか確認
-- GitHub Packages は **public パッケージでも認証が必要**
-
-### `npm error 403 Forbidden`
-
-- CI の場合: Package settings の "Manage Actions access" に消費側リポジトリを追加したか確認
-- permissions に `packages: read` を追加したか確認
+## 4. トラブルシューティング
 
 ### `gh-auth-bridge-client is not configured`
 

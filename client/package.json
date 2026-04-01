@@ -50,7 +50,6 @@
     "prepublishOnly": "pnpm build"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "repository": {
